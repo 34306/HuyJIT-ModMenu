@@ -23,7 +23,7 @@ Huy JIT Mod Menu is a template menu that supported patching offsets/hexes for No
 ### Not support hooking at this time, I'll try to adding it when I have time 🫣
 
 # Usage
-
+**3 fingers double tap to screen to open menu, 2 fingers double tap to disable menu**
 Take a look at `5Toubun/NakanoYotsuba.h` I noted about ASLR issue on Dopamine/Xina/palera1n jailbreak (iOS 15 and up issue), change 0 or 1 depends on which target jailbreak you're using
 
 Editing these in `ImGuiDrawView.mm`
