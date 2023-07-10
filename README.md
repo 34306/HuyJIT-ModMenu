@@ -4,7 +4,7 @@ Huy JIT Mod Menu is a template menu that supported patching offsets/hexes for No
 <div style="text-align: center;">
 <b>IMGUI Template Preview</b><br>
 
-<img src="https://github.com/34306/HuyJIT-ModMenu/blob/main/Preview.PNG?raw=true">
+<img src="https://raw.githubusercontent.com/34306/HuyJIT-ModMenu/main/Preview.PNG">
 </div>
 
 
