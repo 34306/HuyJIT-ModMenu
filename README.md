@@ -1,5 +1,5 @@
 # HuyJIT-ModMenu
-Huy JIT Mod Menu is a template menu that supported patching offsets/hexes for Non-jailbreak with JIT and fix patch for Dopamine jailbreak using IMGUI, also working with other jailbreak!
+Huy JIT Mod Menu is a template menu for iOS that supported patching offsets/hexes for Non-jailbreak with JIT and fix patch for Dopamine jailbreak using IMGUI, also working with other jailbreak!
 
 <div style="text-align: center;">
 <b>IMGUI Template Preview</b><br>
@@ -40,6 +40,8 @@ vm_unity(ENCRYPTOFFSET("0x517A154"), strtoul(ENCRYPTHEX("0x360080D2"), nullptr, 
 You can change this to anything you want to patch on the line where I noted in `5Toubun/NakanoYotsuba.h`. Normally it's `UnityFramework` but some games like LoL WildRift is `FEProj`
 
 - Font using for this menu is Honkai Star Rail font (**English only**)
+
+# If you like and want to ỉmprove this works, please DM me on Telegram @little34306 for fixing stuffs and make it working better. (Pull request button is on the top, you can do that!)
 
 # Author
 - Huy Nguyen (it's me) [34306](https://github.com/34306)
