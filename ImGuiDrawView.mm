@@ -1,33 +1,38 @@
-
-#import "Esp/ImGuiDrawView.h"
+//Require standard library
 #import <Metal/Metal.h>
 #import <MetalKit/MetalKit.h>
 #import <Foundation/Foundation.h>
-#include "IMGUI/imgui.h"
-#include "IMGUI/imgui_impl_metal.h"
-#import <Foundation/Foundation.h>
+//Imgui library
 #import "Esp/CaptainHook.h"
+#import "Esp/ImGuiDrawView.h"
+#import "IMGUI/imgui.h"
+#import "IMGUI/imgui_impl_metal.h"
+#import "IMGUI/Honkai.h"
+//Patch library
 #import "5Toubun/NakanoIchika.h"
 #import "5Toubun/NakanoNino.h"
 #import "5Toubun/NakanoMiku.h"
 #import "5Toubun/NakanoYotsuba.h"
 #import "5Toubun/NakanoItsuki.h"
-#import "Honkai.h"
+#import "5Toubun/dobby.h"
 
 #define kWidth  [UIScreen mainScreen].bounds.size.width
 #define kHeight [UIScreen mainScreen].bounds.size.height
 #define kScale [UIScreen mainScreen].scale
-#define kTest   0 
-#define g 0.86602540378444 
 
 @interface ImGuiDrawView () <MTKViewDelegate>
-//@property (nonatomic, strong) IBOutlet MTKView *mtkView;
 @property (nonatomic, strong) id <MTLDevice> device;
 @property (nonatomic, strong) id <MTLCommandQueue> commandQueue;
 @end
 
 @implementation ImGuiDrawView
 
+//I usually let the function for hooking in here...
+void (*huy)(void *instance);
+void _huy(void *instance)
+{
+huy(instance);
+}
 
 static bool MenDeal = true;
 
@@ -76,16 +81,12 @@ static bool MenDeal = true;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Thực hiện bất kỳ thiết lập bổ sung nào sau khi tải chế độ xem.
     
     self.mtkView.device = self.device;
     self.mtkView.delegate = self;
     self.mtkView.clearColor = MTLClearColorMake(0, 0, 0, 0);
     self.mtkView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     self.mtkView.clipsToBounds = YES;
-
-
- 
 
 }
 
@@ -201,7 +202,6 @@ static bool MenDeal = true;
 
                 ImGui::Checkbox("Map Cheat Enable", &show_s0);
 
-          
                 ImGui::Text("Contact me on Telegram: @little34306 (%.3f ms/frame (%.1f FPS))\nThis menu support Xina, Dopamine, unc0ver, palera1n\nand Non-jailbreak too!", 500.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
 
@@ -217,24 +217,24 @@ static bool MenDeal = true;
     if(show_s0){
         if(show_s0_active == NO){
             vm_unity(ENCRYPTOFFSET("0x517A154"), strtoul(ENCRYPTHEX("0x360080D2"), nullptr, 0));
+            vm(ENCRYPTOFFSET("0x10517A154"), strtoul(ENCRYPTHEX("0x360080D2"), nullptr, 0));
             }
         show_s0_active = YES;
     }
     else{
         if(show_s0_active == YES){
             vm_unity(ENCRYPTOFFSET("0x517A154"), strtoul(ENCRYPTHEX("0xF60302AA"), nullptr, 0));
+            vm(ENCRYPTOFFSET("0x10517A154"), strtoul(ENCRYPTHEX("0xF60302AA"), nullptr, 0));
             }
         show_s0_active = NO;
     }
-            
-//Hook function? Idk, somehow it works on randomly devices?
-//This is an example, but if you like to make it works, just pull request
-/*
+        
+//Hook function example
     static dispatch_once_t onceToken;
             dispatch_once(&onceToken, ^{
-                MSHookFunction((void *)(get_slide()+ENCRYPTOFFSET("0x5F145F8")), (void *)_huy, (void **)&huy);
+                //use DobbyHook, same kind of MSHookFunction but working on JIT, Dopamine!
+                DobbyHook((void *)(getRealOffset(ENCRYPTOFFSET("0x5F145F8"))), (void *)_huy, (void **)&huy);
             });
-*/
 
 
             ImGui::Render();
