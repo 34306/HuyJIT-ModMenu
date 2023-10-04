@@ -58,4 +58,4 @@ DobbyHook((void *)(getRealOffset(ENCRYPTOFFSET("0x5F145F8"))), (void *)_huy, (vo
 - [x2nios](https://github.com/x2niosvn) for [IMGUI Mod Menu](https://github.com/x2niosvn/iOS-IMGUI-Mod-Menu-Templates)
 - [joeyjurjens](https://github.com/joeyjurjens) for [iOS Mod Menu](https://github.com/joeyjurjens/iOS-Mod-Menu-Template-for-Theos)
 - [Dobby](https://github.com/jmpews/Dobby) by [jmpews](https://github.com/jmpews) (Apache-2.0 license)
-- Special thanks to: Red16, tuancc, YeetDisDude, [modfs] AloH and Lavochka (H5GG Discord)
+- Special thanks to: Red16, tuancc, YeetDisDude, [modfs] AloH, HappySecret and Lavochka (H5GG Discord)
