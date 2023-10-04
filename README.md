@@ -12,6 +12,7 @@ Huy JIT Mod Menu is a template menu for iOS that supported patching offsets/hexe
 - I'm using vm_writeData.h to patch the offsets/hexes
 - Kopycat some code from [joeyjurjens](https://github.com/joeyjurjens/iOS-Mod-Menu-Template-for-Theos)
 - Also bring encryption from joeyjurjens template too
+- Hook by DobbyHook
 - Fan boi of 五等分の花嫁
 
 # Installation
@@ -25,7 +26,6 @@ Huy JIT Mod Menu is a template menu for iOS that supported patching offsets/hexe
 
 # Usage
 **3 fingers double tap to screen to open menu, 2 fingers double tap to disable menu**
-- Take a look at `5Toubun/NakanoYotsuba.h` file. I noted about ASLR issue on Dopamine/Xina/palera1n jailbreak (iOS 15 and up issue), change 0 or 1 depends on which target jailbreak you're using
 
 Editing these in `ImGuiDrawView.mm`
 
