@@ -4,7 +4,7 @@ ARCHS = arm64
 DEBUG = 0
 FINALPACKAGE = 1
 FOR_RELEASE = 1
-THEOS_PACKAGE_SCHEME = rootless
+#THEOS_PACKAGE_SCHEME = rootless
 
 include $(THEOS)/makefiles/common.mk
 

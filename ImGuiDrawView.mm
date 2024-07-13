@@ -7,7 +7,7 @@
 #import "Esp/ImGuiDrawView.h"
 #import "IMGUI/imgui.h"
 #import "IMGUI/imgui_impl_metal.h"
-#import "IMGUI/Honkai.h"
+#import "IMGUI/zzz.h"
 //Patch library
 #import "5Toubun/NakanoIchika.h"
 #import "5Toubun/NakanoNino.h"
@@ -15,10 +15,14 @@
 #import "5Toubun/NakanoYotsuba.h"
 #import "5Toubun/NakanoItsuki.h"
 #import "5Toubun/dobby.h"
+#import "5Toubun/il2cpp.h"
 
 #define kWidth  [UIScreen mainScreen].bounds.size.width
 #define kHeight [UIScreen mainScreen].bounds.size.height
 #define kScale [UIScreen mainScreen].scale
+#define patch_NULL(a, b) vm(ENCRYPTOFFSET(a), strtoul(ENCRYPTHEX(b), nullptr, 0))
+#define patch(a, b) vm_unity(ENCRYPTOFFSET(a), strtoul(ENCRYPTHEX(b), nullptr, 0))
+
 
 @interface ImGuiDrawView () <MTKViewDelegate>
 @property (nonatomic, strong) id <MTLDevice> device;
@@ -27,11 +31,35 @@
 
 @implementation ImGuiDrawView
 
-//I usually let the function for hooking in here...
-void (*huy)(void *instance);
-void _huy(void *instance)
-{
-huy(instance);
+static bool show_s0 = false;
+
+//Function for hacking/cheating is now up here. Example auto update right here (work on every version of this game)
+void (*_LActorRoot_Visible)(void *instance, int camp, bool bVisible, const bool forceSync);
+void LActorRoot_Visible(void *instance, int camp, bool bVisible, const bool forceSync = false) {
+    if (instance != nullptr && show_s0) {
+        if(camp == 1 || camp == 2 || camp == 110 || camp == 255) {
+            bVisible = true;
+        }
+    } 
+ return _LActorRoot_Visible(instance, camp, bVisible, forceSync);
+}
+
+uint64_t methodOffset;
+
+void initial_setup(){
+    //Auto update using ByNameModding for il2cpp
+    Il2CppAttach();
+
+    Il2CppMethod& getClass(const char* namespaze, const char* className);
+    uint64_t getMethod(const char* methodName, int argsCount);
+
+    Il2CppMethod methodAccess("Project.Plugins_d.dll");
+    methodOffset = methodAccess.getClass("NucleusDrive.Logic", "LVActorLinker").getMethod("SetVisible", 3);
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        //use DobbyHook, same kind of MSHookFunction but working on JIT, Dopamine!
+        DobbyHook((void *)getRealOffset(methodOffset), (void *)LActorRoot_Visible, (void **)&_LActorRoot_Visible);
+    });
 }
 
 static bool MenDeal = true;
@@ -52,7 +80,7 @@ static bool MenDeal = true;
 
     ImGui::StyleColorsClassic();
     
-    ImFont* font = io.Fonts->AddFontFromMemoryCompressedTTF((void*)Honkai_compressed_data, Honkai_compressed_size, 45.0f, NULL, io.Fonts->GetGlyphRangesDefault());
+    ImFont* font = io.Fonts->AddFontFromMemoryCompressedTTF((void*)zzz_compressed_data, zzz_compressed_size, 60.0f, NULL, io.Fonts->GetGlyphRangesVietnamese());
     
     ImGui_ImplMetal_Init(_device);
 
@@ -151,7 +179,6 @@ static bool MenDeal = true;
     
 
 //Define your bool/function in here
-    static bool show_s0 = false;    
     static bool show_s1 = false;    
     static bool show_s2 = false;    
     static bool show_s3 = false;    
@@ -167,6 +194,7 @@ static bool MenDeal = true;
 
 //Define active function
     static bool show_s0_active = false;
+    static bool show_s1_active = false;
     
         
         if (MenDeal == true) {
@@ -195,46 +223,39 @@ static bool MenDeal = true;
             
             if (MenDeal == true)
             {                
-                ImGui::Begin("Little 34306 JIT Menu!", &MenDeal);
+                ImGui::Begin("Little 34306 JIT Menu Auto Update Unity3D Games!", &MenDeal);
                 ImGui::Text("Use 3 Fingers Click 3 Times Open Menu\n2 Finger Tap Screen 2 Times Hide Menu\n\nOpen In Lobby");
+                ImGui::Text("Dùng 3 ngón chạm 2 lần để mở menu\n2 ngón chạm 2 lần để ẩn menu\n\nBật ở Sảnh");
                 
                 ImGui::TableNextColumn();
 
-                ImGui::Checkbox("Map Cheat Enable", &show_s0);
+                ImGui::Checkbox("Map Cheat Enable || Bật Hack Map", &show_s0);
 
-                ImGui::Text("Contact me on Telegram: @little34306 (%.3f ms/frame (%.1f FPS))\nThis menu support Xina, Dopamine, unc0ver, palera1n\nand Non-jailbreak too!", 500.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-
+                ImGui::Text("Contact on Telegram || Liên hệ qua Telegram:\n@little34306 or x.com/little_34306\nSupport || Hỗ trợ:\nXina, Dopamine, unc0ver, palera1n and Non-jailbreak (JIT)!\n(%.3f ms/frame (%.1f FPS))", 500.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
                 ImGui::End();
+                //require this one inside this to attach when first open menu
+                initial_setup();
                 
             }
             ImDrawList* draw_list = ImGui::GetBackgroundDrawList();
 
 
-
-//Okay so this is the space we place our cheat function
-//This function below maybe outdated, idk. But it's an example how we can use
-    if(show_s0){
-        if(show_s0_active == NO){
-            vm_unity(ENCRYPTOFFSET("0x517A154"), strtoul(ENCRYPTHEX("0x360080D2"), nullptr, 0));
-            vm(ENCRYPTOFFSET("0x10517A154"), strtoul(ENCRYPTHEX("0x360080D2"), nullptr, 0));
+//This function is a patch example function, doesn't work on this menu because I didn't add the button into menu UI
+            if(show_s1){
+                if(show_s1_active == NO){
+                    patch("0x517A154", "0x360080D2");
+                    patch_NULL("0x10517A154", "0x360080D2");
+                    }
+                show_s1_active = YES;
             }
-        show_s0_active = YES;
-    }
-    else{
-        if(show_s0_active == YES){
-            vm_unity(ENCRYPTOFFSET("0x517A154"), strtoul(ENCRYPTHEX("0xF60302AA"), nullptr, 0));
-            vm(ENCRYPTOFFSET("0x10517A154"), strtoul(ENCRYPTHEX("0xF60302AA"), nullptr, 0));
+            else{
+                if(show_s1_active == YES){
+                    patch("0x517A154", "0xF60302AA");
+                    patch_NULL("0x10517A154", "0xF60302AA");
+                    }
+                show_s1_active = NO;
             }
-        show_s0_active = NO;
-    }
-        
-//Hook function example
-    static dispatch_once_t onceToken;
-            dispatch_once(&onceToken, ^{
-                //use DobbyHook, same kind of MSHookFunction but working on JIT, Dopamine!
-                DobbyHook((void *)(getRealOffset(ENCRYPTOFFSET("0x5F145F8"))), (void *)_huy, (void **)&huy);
-            });
 
 
             ImGui::Render();
