@@ -8,7 +8,7 @@ FOR_RELEASE = 1
 
 include $(THEOS)/makefiles/common.mk
 
-TWEAK_NAME = 34306jit
+TWEAK_NAME = Hara_IOS
 #If you want to change TWEAK_NAME just change up here. It will automatically change these below, don't need to change it by hand anymore!
 
 $(TWEAK_NAME)_FRAMEWORKS =  UIKit Foundation Security QuartzCore CoreGraphics CoreText  AVFoundation Accelerate GLKit SystemConfiguration GameController
